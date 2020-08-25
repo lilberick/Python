@@ -8,8 +8,11 @@ $ pip3 install chatterbot
 $ pip3 install chatterbot-corpus
 ```
 ## Ejemplos
-1. Respuestas automáticas
+1. Respuestas automáticas: **codigo.py**
 	```
+	$ python codigo.py
+	```
+	```python
 	from chatterbot import ChatBot
 	from chatterbot.trainers import ChatterBotCorpusTrainer
 	chatbot = ChatBot('InitBot')
@@ -21,8 +24,11 @@ $ pip3 install chatterbot-corpus
 	    print('initBot: ', respuesta)
 	```
 	![](.img/2.png)
-2. Respuestas determinadas
+2. Respuestas determinadas: **codigo.py**
 	```
+	$ python codigo.py
+	```
+	```python
 	from chatterbot import ChatBot
 	from chatterbot.trainers import ListTrainer
 	chatbot = ChatBot('InitBot')
