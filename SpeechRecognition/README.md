@@ -3,13 +3,10 @@
 
 ![](.img/1.png)
 
-## Instalación  
+## Instalación (usando un entorno virtual)  
 ```
-$ pip3 install SpeechRecognition
-$ pip3 install bs4
-$ pip3 install pyglet
-$ pip3 install gtts
-$ pip3 install pygame
+$ pipenv install pyaudio
+$ pipenv install SpeechRecognition
 ```
 ## Ejemplos en Python
 1. Audio a texto (audio en ingles) (usar audio .wav)
@@ -54,6 +51,21 @@ $ pip3 install pygame
 	    audio = r.listen(source)
 	try:
 	    print("You said " + r.recognize_google(audio))
+	except sr.UnknownValueError:
+	    print("Could not understand audio")
+	except sr.RequestError as e:
+	    print("Could not request results; {0}".format(e))
+	```
+5. Micrófono a texto (hablar en español)
+	```python
+	import speech_recognition as sr
+	# get audio from the microphone
+	r = sr.Recognizer()
+	with sr.Microphone() as source:
+	    print("Speak:")
+	    audio = r.listen(source)
+	try:
+	    print("You said " + r.recognize_google(audio,language='es-PE'))
 	except sr.UnknownValueError:
 	    print("Could not understand audio")
 	except sr.RequestError as e:
