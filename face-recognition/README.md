@@ -56,9 +56,55 @@
 		```
 		[(68, 294, 175, 187)]
 		```
+2. Encerrar mediante un recuadro los rostros detectados
+	1. Código  
+		```py
+		import cv2
+		from PIL import Image
+		import face_recognition
+		image = face_recognition.load_image_file("foto.png")
+		face_locations = face_recognition.face_locations(image)
+		for (y1,x2,y2,x1) in face_locations:
+		    cv2.rectangle(image,(x1,y1),(x2,y2),(0,0,255),2)
+		    pil_image = Image.fromarray(image)
+		pil_image.show()	
+		```
+	2. Imagen usada: **foto.png**  
+		![](.img/usadocuadro.jpeg)
+	3. Resultado  
+		![](.img/detectadocuadro.png)
+3. Encerrar en un recuadro a una persona especifica
+	1. Código
+		```py
+		import face_recognition
+		import cv2
+		from PIL import Image
+		me = face_recognition.load_image_file("elon.jpg")
+		my_face_encoding = face_recognition.face_encodings(me)[0]
+		unknown= face_recognition.load_image_file("objetivo.jpg")
+		unknown_face_encoding = face_recognition.face_encodings(unknown)
+		unknown_locations = face_recognition.face_locations(unknown)
+		i=0
+		for face_encoding in unknown_face_encoding:
+		    match = face_recognition.compare_faces([my_face_encoding], face_encoding, tolerance=0.50)
+		    print(match)
+		    if match[0]:
+			(y1,x2,y2,x1)=unknown_locations[i]
+			cv2.rectangle(unknown,(x1,y1),(x2,y2),(0,0,255),2)
+			pil_image = Image.fromarray(unknown)
+			pil_image.show()
+		    i+=1
+		```
+	2. Imagenes Input
+		1. Imagen de la persona que queremos encontrar: **elon.jpg**  
+			![](.img/elon.jpg)
+		2. Imagen donde queremos buscar a la persona: **objetivo.jpg**  
+			![](.img/5.png)
+	3. Output:    
+		![](.img/elonencontrado.png)
 2. Mostrar caras detectadas
 	1. Código
-		```python
+		```py
 		from PIL import Image
 		import face_recognition
 		# Load the jpg file into a numpy array
