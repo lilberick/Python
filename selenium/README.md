@@ -174,3 +174,61 @@
 	```
 2. Output
 	![](.img/vizcarri.png)
+## Jugando [typeracer.com](https://typeracer.com/ "Dale click papu")
+1. `codigo.py`  
+	```py
+	from selenium import webdriver
+	from selenium.webdriver.common.keys import Keys
+	import time
+	import os
+
+	browser = webdriver.Firefox(firefox_binary="/usr/bin/firefox-esr")
+	def cargar():
+	    browser.get('https://play.typeracer.com/')
+	    time.sleep(5)
+	    a = browser.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/a')
+	    a.click()
+	def typing():
+	    #time.sleep(3)
+	    b = browser.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div/div[1]/div/table/tbody/tr[2]/td[3]/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr[1]/td/div/div')
+	    b.text
+	    #time.sleep(7)
+	    for i in range(len(b.text)):
+		#print(b.text[i])
+		elem = browser.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div/div[1]/div/table/tbody/tr[2]/td[3]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/input')
+		#elem = browser.find_element_by_class_name('txtInput')
+		elem.send_keys(b.text[i])
+		time.sleep(0.00001)
+
+	def raceAgain():
+	    raceAgain = browser.find_element_by_class_name("raceAgainLink")
+	    raceAgain.click()
+
+	def test():
+	    w = browser.find_element_by_xpath('/html/body/div[9]/div/div/div[2]/div/div/table/tbody/tr[4]/td/button')
+	    w.click()
+
+	while True:
+	    print("************OPCIONES*****************")
+	    print("Volver a cargar la pagina presionar la tecla: p")
+	    print("Para tipear presionar la tecla: t")
+	    print("Para jugar otra vez presionar la tecla: s")
+	    print("Para empezar test escribir: test")
+	    text=input("Que opcion escoges?: ")
+	    if(text == 'p'):
+		print('cargando pagina...')
+		cargar()
+	    elif(text == 't'):
+		print('tipeando...')
+		typing()
+	    elif(text == 's'):
+		print('siguiente...')
+		raceAgain()
+	    elif(text == 'test'):
+		print('empezando test...')
+		test()
+	```
+2. Output  
+	![](.img/tipeando.png)  
+3. Si pasamos los 100 wpm (palabras por minuto) entonces nos aparece un capcha.  
+	![](.img/capcha.png)  
