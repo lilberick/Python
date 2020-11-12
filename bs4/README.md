@@ -38,21 +38,23 @@ $ pip3 install beautifulsoup4
 	discurso = ''
 	for tag in tags:
 	    if(len(tag.attrs)) == 0:
-		a = tag.contents[0]
-		discurso = discurso + a
+		    a = tag.contents[0]
+		    discurso = discurso + a
 
 	print(discurso)
 	contadores = dict()
 	discurso = discurso.replace(',','').replace('.','').replace('?','').lower()
 	palabras = discurso.split()
 	for palabra in palabras:
-	    if len(palabra) > 3:
-		contadores[palabra] = contadores.get(palabra,0) + 1
+	    contadores[palabra] = contadores.get(palabra,0) + 1
+
+	remover= ('para', 'todo','sido','como','quién','ante','esta','de','del','la','y','el','en','a','que','mi','mis','al','los','lo','con','por','me','las','un','una','ha','han','se','si','no','voy','día','son','toda','o','muy','todos','qué','fui','he','cuando','estos','su','más','es','sus','nos','este','pero','le','ser','eso','solo','aqui','otros','aquí','están','está','entre','fue')
+	for k in remover:
+	    contadores.pop(k, None)
 
 	import pandas
 	b=pandas.DataFrame(list(contadores.items()),columns=['palabra','contador']).sort_values('contador',ascending=False)
-	print(b)
-
+	print(b.head(40))
 	```
 2. output  
 	1. discurso   
