@@ -117,3 +117,53 @@ $ pipenv install SpeechRecognition
 3. Output  
 	![](.img/ContenidoDeTexto.png)  
 	![](.img/ContadorPalabras.png)    
+## Conteo de palabras: Discurso de la renuncia del Presidente Merino
+1. Input: [RenunciaMerino.wav](.img/RenunciaMerino.wav)
+2. `codigo.py`
+
+	```py
+	import os
+	os.system('/usr/bin/ffmpeg -i RenunciaMerino.wav -c copy -map 0 -segment_time 00:05:00 -f segment output%03d.wav')
+	import glob
+	print(glob.glob("output*.wav"))
+	a=glob.glob("output*.wav")
+	texto=''
+	for i in range(len(a)):
+	    print(a[i])
+	    #audio_to_text():
+	    import speech_recognition as sr
+	    r = sr.Recognizer()
+	    audio=a[i]
+	    with sr.AudioFile(audio) as source:
+		audio = r.record(source)
+		print('Done!')
+	    try:    
+		text = r.recognize_google(audio,language='es-PE')
+	    except Exception as e:
+		print(e)
+	    texto=texto+" "+text
+
+	print("CONTENIDO DEL TEXTO")
+	print(texto)
+	#archi=open('datos.txt','w')
+	archi=open('texto.txt','a')
+	archi.write(texto)
+	archi.close
+	#Conteo de palabras
+	contadores = dict()
+	texto = texto.replace(',','').replace('.','').replace('?','').lower()
+	palabras = texto.split()
+	for palabra in palabras:
+	    contadores[palabra]=contadores.get(palabra,0)+1
+
+	remover= ('para', 'todo','sido','como','quién','ante','esta','de','del','la','y','el','en','a','que','mi','mis','al','los','lo','con','por','me','las','un','una','ha','han','se','si','no','voy','día','son','toda','o','muy','todos','qué','fui','he','cuando','estos','su','más','es','sus','nos','este','pero','le','ser','eso','solo','aqui','otros','aquí','están','está','entre','fue')
+	for k in remover:
+	    contadores.pop(k, None)
+
+	import pandas
+	b=pandas.DataFrame(list(contadores.items()),columns=['palabra','contador']).sort_values('contador',ascending=False)
+	print(b.head(30))
+	```
+3. Output  
+	![](.img/TextoRenuncia.png)  
+	![](.img/ConteoPalabrasRenuncia.png)    
