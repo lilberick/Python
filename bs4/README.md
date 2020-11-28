@@ -78,3 +78,56 @@ $ pip3 install beautifulsoup4
 	print(total)
 	```
 2. output: 697.5
+
+## Extraer data de politicos
+1. Input
+	![](.img/votaly.png)
+1. Codigo
+
+	```py
+	import requests
+	response=requests.get('https://votaly.com/elecciones-2020-peru')
+	import bs4
+	soup = bs4.BeautifulSoup(response.text,'html.parser')
+	import csv
+	politico=['PARTIDO POLITICO','REGION','NOMBRE','CARGO','LUGAR DE TRABAJO']
+	with open('archivo.csv', 'w') as file:
+	    writer = csv.writer(file,dialect='excel')
+	    writer.writerow(politico)
+	    #Empieza el scrapeo eo eo 
+	    datos = soup.select('a')
+	    for dato in datos[23:59]:
+		#partido politico
+		div = dato.find("div", {"class": "flex justify-center leading-none"})
+		a=str(div.select('img'))
+		import re
+		result = re.search('src="(.*)"/>',a)
+		print('PARTIDO POLITICO: ',result.group(1))
+		politico=[result.group(1)]
+		#region
+		div = dato.find("div", {"class": "text-sm"})
+		print('REGION: ',div.contents[0])
+		politico.append(re.search('\n            (.*)\n          ',str(div.contents[0])).group(1))
+		#nombre
+		div = dato.find("div", {"class": "card-title"})
+		print('NOMBRE: ',div.contents[0])
+		politico.append(str(div.contents[0]).replace("\n",' ').replace("             ",'').replace("           ",''))
+		#cargo
+		div = dato.find("div", {"class": "flex-1"})
+		print('CARGO: ',div.contents[4].contents[2].contents[0].contents[0])
+		cargo = str(div.contents[4].contents[2].contents[0].contents[0])
+		politico.append(str(cargo).replace("\n",'').replace("                ",'').replace("              ",''))
+		#lugar de trabajo
+		div = dato.find("div", {"class": "capitalize text-gray-500"})
+		if len(dir(div)) < 25:
+		    lugarTrabajo='No encontrado'
+		else:
+		    lugarTrabajo=str(div.contents[0])
+		print('LUGAR DE TRABAJO: ',lugarTrabajo)
+		politico.append(str(lugarTrabajo).replace("\n",'').replace("                ",'').replace("              ",''))
+		print(politico)
+		writer.writerow(politico)
+
+	```
+2. output: **archivo.csv**  
+	![](.img/EstraccionPoliticos.png)
