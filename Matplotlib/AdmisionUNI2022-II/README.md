@@ -2,10 +2,18 @@
 
 ## DATA: 
 
-* **ANTES**: a.csv (2022-08-22)
-* **DESPUES**: b.csv (2022-08-23)
+1. Archivos
 
-![](.img/1.png)
+	* **ANTES**: a.csv (2022-08-22)
+	* **DESPUES**: b.csv (2022-08-23)
+
+2. Contenido
+
+	![](.img/Data.png)
+
+3. Modalidades
+
+	![](.img/modalidades.png)
 
 ## `codigo.py`
 
